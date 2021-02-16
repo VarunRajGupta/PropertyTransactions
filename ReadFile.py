@@ -41,7 +41,21 @@ def file_key_generation(file_name,record_count,PAON_loc,SAON_loc):
 	print(get_currenttime(),': Unique Property Key Generation step completed')
 	return(prop_key)
 
+def append_prop_key(file_name,prop_key,file_name_updt,PAON_loc,SAON_loc):
+	print(get_currenttime(),': Property Key append to dataframe started')
+	# change directory to File Path
+	os.chdir(r'D:\VarunDocuments\Street_Assesment\Data\arrival')
+	# Read CSV File as DataFrame
+	data_file = pd.read_csv(file_name)
+	# Add Property Key to csv
+	data_file['PropertyKey'] = prop_key
+	data_file.iloc[0,len(data_file.columns)-1] = str(data_file.iloc[0,PAON_loc])+"_"+str(data_file.iloc[0,SAON_loc])
+	print(get_currenttime(),': Property Key appended to dataframe completed')
+	print(data_file.iloc[0:2,])
+	return(data_file)
+
+
 record_count = file_validation('pp2020.csv')
 prop_key = file_key_generation('pp2020.csv',record_count,7,8)
-
+data_frame = append_prop_key('pp2020.csv',prop_key,'pp2020Updated.csv',7,8)  
 
