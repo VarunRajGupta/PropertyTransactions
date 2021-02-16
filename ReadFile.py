@@ -33,11 +33,13 @@ def file_key_generation(file_name,record_count,PAON_loc,SAON_loc,PC_loc,header_f
 	data_file = pd.read_csv(file_name)
 	# Declare Column Name for DataFrame
 	data_file.columns = ['TUI','Price','DOT','PostCode','PropertyType','AgeIndicator','Duration','PAON','SAON','Street','Locality','Town','District','County','PPDCat','RecordStatus']
+	# Writing to CSV to add header to CSV
 	data_file.to_csv(header_file)
 	df = pd.read_csv(header_file)
 	row_no = 0
 	prop_key = []
 	while row_no < record_count-1:
+		# Appending PostCode, SAON and PAON
 		prop_key_value = str(df.iloc[row_no,PC_loc]).replace(" ","")+"_"+str(df.iloc[row_no,PAON_loc])+"_"+str(df.iloc[row_no,SAON_loc])
 		prop_key.append(prop_key_value)
 		#print(get_currenttime(),': Row processed successfully - ', row_no)
@@ -73,8 +75,9 @@ def create_JSON(df,json_file_name):
 		rec = get_nested_rec(key, grp)
 		records.append(rec)
 	print(get_currenttime(),': JSON File data genration completed, writing to file')
+	#print(type(records))
 	with open(json_file_name, 'w') as jf:
-		json.dumps(records, indent=4)
+		json.dump(records, jf)
 	print(get_currenttime(),': JSON File writing to file written successfully')
 
 
