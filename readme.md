@@ -12,7 +12,8 @@ to generate output.
 
 This existing code as is will not run in apache beam or dataflow it need to updated with Apache Beam steps, moslty coverting this pyhton programem in to a pipeline.
 
-Few more changes will required to make this script run on cloud i.e. instead of reading or writing the files to C or D drive, we will need to do all read/write operations on Bucket.
+Few more changes will required to make this script run on cloud i.e. instead of reading or writing the files to C or D drive, we will need to do all read/write operations on 
+Bucket.
 
 Pipeline code for Apache Beam will look like this.
 
