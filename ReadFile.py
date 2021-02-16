@@ -57,18 +57,24 @@ def append_prop_key(file_name,prop_key):
 	#print(data_file.iloc[10:20,])
 	return(data_file)
 
-def create_JSON(data_frame,json_file_name):
+def get_nested_rec(key, grp):
+    rec = {}
+    rec['PropertyKey'] = key[0]
+
+    for field in ['TUI','Price','DOT','PostCode','PropertyType','AgeIndicator','Duration','PAON','SAON','Street','Locality','Town','District', 'County','PPDCat','RecordStatus']:
+        rec[field] = list(grp[field].unique())
+
+    return rec
+
+def create_JSON(df,json_file_name):
 	print(get_currenttime(),': JSON File data genration started')
-	json_file = defaultdict(list)
-	for _id in data_frame.T:
-		data = data_frame.T[_id]
-		Key = data.PropertyKey
-		for row in json_file[Key]:
-			values = {'TUI': data.TUI, 'Price': data.Price, 'DOT': data.DOT, 'PostCode': data.PostCode, 'PropertyType': data.PropertyType, 'AgeIndicator': data.AgeIndicator, 'Duration': data.Duration, 'PAON': data.PAON, 'SAON': data.SAON, 'Street': data.Street, 'Locality': data.Locality, 'Town': data.Town, 'District': data.District, 'County': data.County, 'PPDCat': data.PPDCat, 'RecordStatus': data.RecordStatus}
-			json_file[Key].append(values)
+	records = []
+	for key, grp in df.groupby(['PropertyKey']):
+		rec = get_nested_rec(key, grp)
+		records.append(rec)
 	print(get_currenttime(),': JSON File data genration completed, writing to file')
 	with open(json_file_name, 'w') as jf:
-		json.dump(json_file,jf,indent=4)
+		json.dumps(records, indent=4)
 	print(get_currenttime(),': JSON File writing to file written successfully')
 
 
