@@ -13,3 +13,16 @@ to generate output.
 This existing code as is will not run in apache beam or dataflow it need to updated with Apache Beam steps, moslty coverting this pyhton programem in to a pipeline.
 
 Few more changes will required to make this script run on cloud i.e. instead of reading or writing the files to C or D drive, we will need to do all read/write operations on Bucket.
+
+Pipeline code for Apache Beam will look like this.
+
+import apache_beam as beam
+
+with beam.Pipeline() as pipeline:
+	data_processing = (
+		pipeline
+		|'Extract_CSV' >> file_validation('pp2020.csv')
+		|'Transform_Data_1' >> file_key_generation('pp2020.csv',record_count,7,8,3,'pp2020_header.csv')
+		|'Transform_Data_2' >> append_prop_key('pp2020_header.csv',prop_key)
+		|'Load_JSON' >> create_JSON(data_frame,'pp2020.json')
+		)
